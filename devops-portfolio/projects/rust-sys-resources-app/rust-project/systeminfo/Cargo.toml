@@ -1,0 +1,16 @@
+[package]
+name = "systeminfo"
+version = "0.1.0"
+edition = "2021"
+authors = ["Yakov Avshalom <yakov.av@gmail.com>"]
+description = "Gets the system hardware and os information"
+keywords = ["hardware", "operatingsystem", "os", "system", "information"]
+exclude = ["examples"]
+readme = "README.md"
+license = "MIT"
+
+[dependencies]
+systeminfo = { git = "https://github.com/marirs/systeminfo-rs", branch = "main" }
+libc = "0.2.94"
+serde = { version = "1.0.126", features = ["derive"] }
+
