@@ -22,6 +22,7 @@ Kubernetes, Docker, Rust, Node.js, Linux System Administration, Monitoring
 
 ## Contact Information
 You can reach me at: [yakov.av@gmail.com](mailto:yakov.av@gmail.com)
+Read more about me in my [profile](about-me/profile.md).
 
 ## How to Use this Portfolio
 Navigate through the projects listed above to explore my work and skills in DevOps.
