@@ -1,0 +1,45 @@
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        text { font-family: Arial; }
+        .label { font-size: 14px; fill: #333; }
+        .arrow { stroke: #3498db; stroke-width: 2; }
+        .box { fill: #3498db; opacity: 0.2; stroke: #2980b9; }
+    </style>
+    <g transform="translate(50,50)">
+        <!-- Workspace -->
+        <rect x="50" y="100" width="120" height="60" class="box" rx="5"/>
+        <text x="110" y="135" class="label" text-anchor="middle">Working Directory</text>
+        
+        <!-- Staging -->
+        <rect x="300" y="100" width="120" height="60" class="box" rx="5"/>
+        <text x="360" y="135" class="label" text-anchor="middle">Staging Area</text>
+        
+        <!-- Local Repo -->
+        <rect x="550" y="100" width="120" height="60" class="box" rx="5"/>
+        <text x="610" y="135" class="label" text-anchor="middle">Local Repository</text>
+
+        <!-- Remote -->
+        <rect x="550" y="250" width="120" height="60" class="box" rx="5"/>
+        <text x="610" y="285" class="label" text-anchor="middle">Remote Repository</text>
+
+        <!-- Arrows -->
+        <path d="M170,130 L300,130" class="arrow" marker-end="url(#arrowhead)"/>
+        <text x="235" y="120" class="label">git add</text>
+
+        <path d="M420,130 L550,130" class="arrow" marker-end="url(#arrowhead)"/>
+        <text x="485" y="120" class="label">git commit</text>
+
+        <path d="M610,160 L610,250" class="arrow" marker-end="url(#arrowhead)"/>
+        <text x="640" y="205" class="label">git push</text>
+
+        <path d="M580,250 L580,160" class="arrow" marker-end="url(#arrowhead)"/>
+        <text x="550" y="205" class="label">git pull</text>
+
+        <!-- Arrow marker -->
+        <defs>
+            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="#3498db"/>
+            </marker>
+        </defs>
+    </g>
+</svg> 

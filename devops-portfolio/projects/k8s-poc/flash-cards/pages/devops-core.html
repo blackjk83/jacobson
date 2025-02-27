@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Core Concepts - Flash Cards</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/cards.css">
+    <link rel="stylesheet" href="../assets/css/dark-mode.css">
+</head>
+<body>
+    <div class="nav-bar">
+        <a href="../index.html">← Back to Topics</a>
+    </div>
+
+    <div class="intro-section">
+        <h1>DevOps Core Concepts</h1>
+        
+        <div class="intro-content">
+            <p>
+                DevOps is a set of practices that combines software development (Dev) and IT operations (Ops). 
+                It aims to shorten the systems development life cycle and provide continuous delivery with high 
+                software quality.
+            </p>
+
+            <div class="architecture-diagram">
+                <h3>DevOps Infinity Loop</h3>
+                <div class="diagram-container">
+                    <img src="../assets/diagrams/devops-loop.svg" alt="DevOps Infinity Loop">
+                </div>
+            </div>
+
+            <div class="key-concepts">
+                <h3>Key Principles:</h3>
+                <ul>
+                    <li><strong>Continuous Integration:</strong> Frequent code integration and testing</li>
+                    <li><strong>Continuous Delivery:</strong> Automated release process</li>
+                    <li><strong>Infrastructure as Code:</strong> Managing infrastructure through code</li>
+                    <li><strong>Monitoring and Logging:</strong> Continuous observation and improvement</li>
+                    <li><strong>Communication:</strong> Breaking down silos between teams</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container" id="cardContainer"></div>
+
+    <script src="../data/devops-core.js"></script>
+    <script src="../assets/js/cards.js"></script>
+    <script>
+        renderCards(devopsCoreFlashcards, 'cardContainer');
+    </script>
+</body>
+</html> 

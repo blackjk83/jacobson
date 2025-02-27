@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker Flash Cards</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/cards.css">
+    <link rel="stylesheet" href="../assets/css/dark-mode.css">
+</head>
+<body>
+    <div class="nav-bar">
+        <a href="../index.html">← Back to Topics</a>
+    </div>
+
+    <div class="intro-section">
+        <h1>Docker Interview Questions</h1>
+        
+        <div class="intro-content">
+            <p>
+                Docker is a platform for containerization that enables developers to package applications 
+                and their dependencies into lightweight, portable containers. These containers can run 
+                consistently across different environments, making deployment and scaling easier.
+            </p>
+
+            <div class="architecture-diagram">
+                <h3>Docker Architecture</h3>
+                <div class="diagram-container">
+                    <img src="../assets/diagrams/docker-arch.svg" alt="Docker Architecture Diagram">
+                </div>
+            </div>
+
+            <div class="key-concepts">
+                <h3>Key Components:</h3>
+                <ul>
+                    <li><strong>Docker Daemon:</strong> Background service managing containers</li>
+                    <li><strong>Docker CLI:</strong> Command-line interface for Docker</li>
+                    <li><strong>Images:</strong> Read-only templates for containers</li>
+                    <li><strong>Containers:</strong> Runnable instances of images</li>
+                    <li><strong>Registry:</strong> Storage for Docker images</li>
+                    <li><strong>Volumes:</strong> Persistent data storage</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container" id="cardContainer"></div>
+
+    <script src="../data/docker.js"></script>
+    <script src="../assets/js/cards.js"></script>
+    <script>
+        renderCards(dockerFlashcards, 'cardContainer');
+    </script>
+</body>
+</html> 

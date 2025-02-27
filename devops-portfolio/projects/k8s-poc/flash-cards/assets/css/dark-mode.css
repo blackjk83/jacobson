@@ -1,0 +1,33 @@
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text-color: #fff;
+        --background-light: #1a1a1a;
+        --background-dark: #2c3e50;
+    }
+    
+    .topic-card {
+        background: #2c3e50;
+    }
+    
+    .topic-card.coming-soon {
+        background: #34495e;
+    }
+
+    .intro-content {
+        background: #2c3e50;
+    }
+    
+    .ascii-diagram {
+        background: #34495e;
+        color: #fff;
+    }
+
+    .diagram-container {
+        background: #2c3e50;
+    }
+
+    .diagram-container img,
+    .diagram-container svg {
+        filter: invert(0.9) hue-rotate(180deg);
+    }
+} 

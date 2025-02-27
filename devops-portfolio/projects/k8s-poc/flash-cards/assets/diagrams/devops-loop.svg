@@ -1,0 +1,38 @@
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        text { font-family: Arial; }
+        .phase { font-size: 14px; fill: #333; }
+        .arrow { fill: none; stroke: #3498db; stroke-width: 2; }
+    </style>
+    <g transform="translate(400,200)">
+        <!-- Infinity loop shape -->
+        <path d="M-150,0 C-150,-100 150,-100 150,0 C150,100 -150,100 -150,0" 
+              class="arrow" fill="none" stroke-dasharray="10,5"/>
+        
+        <!-- Phases -->
+        <g transform="translate(-120,-60)">
+            <circle cx="0" cy="0" r="40" fill="#3498db" opacity="0.2"/>
+            <text x="0" y="0" class="phase" text-anchor="middle">Plan</text>
+        </g>
+        <g transform="translate(0,-80)">
+            <circle cx="0" cy="0" r="40" fill="#3498db" opacity="0.2"/>
+            <text x="0" y="0" class="phase" text-anchor="middle">Code</text>
+        </g>
+        <g transform="translate(120,-60)">
+            <circle cx="0" cy="0" r="40" fill="#3498db" opacity="0.2"/>
+            <text x="0" y="0" class="phase" text-anchor="middle">Build</text>
+        </g>
+        <g transform="translate(120,60)">
+            <circle cx="0" cy="0" r="40" fill="#3498db" opacity="0.2"/>
+            <text x="0" y="0" class="phase" text-anchor="middle">Deploy</text>
+        </g>
+        <g transform="translate(0,80)">
+            <circle cx="0" cy="0" r="40" fill="#3498db" opacity="0.2"/>
+            <text x="0" y="0" class="phase" text-anchor="middle">Monitor</text>
+        </g>
+        <g transform="translate(-120,60)">
+            <circle cx="0" cy="0" r="40" fill="#3498db" opacity="0.2"/>
+            <text x="0" y="0" class="phase" text-anchor="middle">Operate</text>
+        </g>
+    </g>
+</svg> 

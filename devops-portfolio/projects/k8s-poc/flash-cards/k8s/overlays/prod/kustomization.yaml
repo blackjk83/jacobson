@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: flash-cards-prod
+
+resources:
+- ../../base
+
+images:
+- name: yakovav/flash-cards-ops
+  newTag: latest
+
+patches:
+- target:
+    kind: Deployment
+    name: flash-cards
+  patch: |-
+    - op: replace
+      path: /spec/replicas
+      value: 3 

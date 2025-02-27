@@ -1,0 +1,26 @@
+.main-nav {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.main-nav button {
+  padding: 10px 20px;
+  background: #2c3e50;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 1.1em;
+}
+
+.main-nav button:hover {
+  background: #34495e;
+}
+
+.main-nav button.active {
+  background: #3498db;
+} 

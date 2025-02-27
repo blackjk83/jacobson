@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kubernetes Flash Cards</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/cards.css">
+    <link rel="stylesheet" href="../assets/css/dark-mode.css">
+</head>
+<body>
+    <div class="nav-bar">
+        <a href="../index.html">← Back to Topics</a>
+    </div>
+
+    <div class="intro-section">
+        <h1>Kubernetes (K8s) Interview Questions</h1>
+        
+        <div class="intro-content">
+            <p>
+                Kubernetes is an open-source container orchestration platform that automates the deployment, 
+                scaling, and management of containerized applications. Originally developed by Google, it's 
+                now maintained by the Cloud Native Computing Foundation (CNCF).
+            </p>
+
+            <div class="architecture-diagram">
+                <h3>Kubernetes Architecture</h3>
+                <pre class="ascii-diagram">
+┌──────────────────────────────────────────────────────────┐
+│                   Kubernetes Cluster                      │
+│                                                          │
+│  ┌─────────────────┐        ┌─────────────────────────┐ │
+│  │  Control Plane  │        │      Worker Nodes       │ │
+│  │                 │        │                         │ │
+│  │  ┌─────────┐   │        │  ┌──────┐   ┌──────┐   │ │
+│  │  │API      │   │        │  │Pod   │   │Pod   │   │ │
+│  │  │Server   │   │        │  │      │   │      │   │ │
+│  │  └─────────┘   │        │  └──────┘   └──────┘   │ │
+│  │  ┌─────────┐   │        │  ┌──────────────────┐  │ │
+│  │  │Scheduler│   │◄─────┐ │  │    Kubelet       │  │ │
+│  │  └─────────┘   │      │ │  └──────────────────┘  │ │
+│  │  ┌─────────┐   │      ├─┤  ┌──────────────────┐  │ │
+│  │  │Control  │   │      │ │  │   Container      │  │ │
+│  │  │Manager  │   │      │ │  │   Runtime       │  │ │
+│  │  └─────────┘   │      │ │  └──────────────────┘  │ │
+│  │  ┌─────────┐   │      │ │  ┌──────────────────┐  │ │
+│  │  │  etcd   │   │      └─┤  │   kube-proxy     │  │ │
+│  │  └─────────┘   │        │  └──────────────────┘  │ │
+│  └─────────────────┘        └─────────────────────────┘ │
+└──────────────────────────────────────────────────────────┘</pre>
+            </div>
+
+            <div class="key-concepts">
+                <h3>Key Components:</h3>
+                <ul>
+                    <li><strong>Control Plane:</strong> Manages the cluster state and configuration</li>
+                    <li><strong>API Server:</strong> Frontend for Kubernetes control plane</li>
+                    <li><strong>etcd:</strong> Consistent and highly-available key-value store</li>
+                    <li><strong>Scheduler:</strong> Assigns pods to nodes</li>
+                    <li><strong>Controller Manager:</strong> Regulates state of the system</li>
+                    <li><strong>Worker Nodes:</strong> Run the actual applications</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container" id="cardContainer"></div>
+
+    <script src="../data/kubernetes.js"></script>
+    <script src="../assets/js/cards.js"></script>
+    <script>
+        renderCards(kubernetesFlashcards, 'cardContainer');
+    </script>
+</body>
+</html> 

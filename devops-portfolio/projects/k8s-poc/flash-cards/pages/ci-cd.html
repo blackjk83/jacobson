@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CI/CD Flash Cards</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/cards.css">
+    <link rel="stylesheet" href="../assets/css/dark-mode.css">
+</head>
+<body>
+    <div class="nav-bar">
+        <a href="../index.html">← Back to Topics</a>
+    </div>
+
+    <div class="intro-section">
+        <h1>CI/CD Interview Questions</h1>
+        
+        <div class="intro-content">
+            <p>
+                Continuous Integration (CI) and Continuous Delivery/Deployment (CD) are software development 
+                practices that enable teams to deliver code changes more frequently and reliably. CI/CD 
+                automates the building, testing, and deployment of applications.
+            </p>
+
+            <div class="architecture-diagram">
+                <h3>CI/CD Pipeline Architecture</h3>
+                <div class="diagram-container">
+                    <img src="../assets/diagrams/cicd-pipeline.svg" alt="CI/CD Pipeline Architecture">
+                </div>
+            </div>
+
+            <div class="key-concepts">
+                <h3>Key Components:</h3>
+                <ul>
+                    <li><strong>Continuous Integration:</strong> Automated code integration and testing</li>
+                    <li><strong>Continuous Delivery:</strong> Automated release process up to production</li>
+                    <li><strong>Continuous Deployment:</strong> Automated deployment to production</li>
+                    <li><strong>Pipeline:</strong> Automated workflow of CI/CD processes</li>
+                    <li><strong>Quality Gates:</strong> Automated quality checks and approvals</li>
+                    <li><strong>Artifacts:</strong> Build outputs and deployable packages</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container" id="cardContainer"></div>
+
+    <script src="../data/cicd.js"></script>
+    <script src="../assets/js/cards.js"></script>
+    <script>
+        renderCards(cicdFlashcards, 'cardContainer');
+    </script>
+</body>
+</html> 

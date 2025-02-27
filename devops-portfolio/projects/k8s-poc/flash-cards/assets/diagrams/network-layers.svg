@@ -1,0 +1,32 @@
+<svg width="800" height="500" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        text { font-family: Arial; }
+        .label { font-size: 14px; fill: #333; }
+        .layer { fill: #3498db; opacity: 0.2; stroke: #2980b9; }
+    </style>
+    <g transform="translate(100,50)">
+        <!-- OSI Layers -->
+        <g>
+            <rect x="0" y="0" width="600" height="60" class="layer"/>
+            <text x="300" y="35" class="label" text-anchor="middle">Application Layer (HTTP, FTP, DNS)</text>
+            
+            <rect x="0" y="70" width="600" height="60" class="layer"/>
+            <text x="300" y="105" class="label" text-anchor="middle">Presentation Layer (SSL, TLS)</text>
+            
+            <rect x="0" y="140" width="600" height="60" class="layer"/>
+            <text x="300" y="175" class="label" text-anchor="middle">Session Layer (NetBIOS, RPC)</text>
+            
+            <rect x="0" y="210" width="600" height="60" class="layer"/>
+            <text x="300" y="245" class="label" text-anchor="middle">Transport Layer (TCP, UDP)</text>
+            
+            <rect x="0" y="280" width="600" height="60" class="layer"/>
+            <text x="300" y="315" class="label" text-anchor="middle">Network Layer (IP, ICMP)</text>
+            
+            <rect x="0" y="350" width="600" height="60" class="layer"/>
+            <text x="300" y="385" class="label" text-anchor="middle">Data Link Layer (Ethernet)</text>
+            
+            <rect x="0" y="420" width="600" height="60" class="layer"/>
+            <text x="300" y="455" class="label" text-anchor="middle">Physical Layer (Cables, Signals)</text>
+        </g>
+    </g>
+</svg> 

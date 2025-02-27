@@ -1,0 +1,45 @@
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        text { font-family: Arial; }
+        .label { font-size: 14px; fill: #333; }
+        .stage { fill: #3498db; opacity: 0.2; stroke: #2980b9; }
+        .arrow { stroke: #3498db; stroke-width: 2; }
+    </style>
+    <g transform="translate(50,50)">
+        <!-- Pipeline Stages -->
+        <g transform="translate(0,100)">
+            <!-- Source -->
+            <rect x="20" y="0" width="120" height="60" class="stage" rx="5"/>
+            <text x="80" y="35" class="label" text-anchor="middle">Source</text>
+            
+            <!-- Build -->
+            <rect x="180" y="0" width="120" height="60" class="stage" rx="5"/>
+            <text x="240" y="35" class="label" text-anchor="middle">Build</text>
+            
+            <!-- Test -->
+            <rect x="340" y="0" width="120" height="60" class="stage" rx="5"/>
+            <text x="400" y="35" class="label" text-anchor="middle">Test</text>
+            
+            <!-- Deploy -->
+            <rect x="500" y="0" width="120" height="60" class="stage" rx="5"/>
+            <text x="560" y="35" class="label" text-anchor="middle">Deploy</text>
+            
+            <!-- Monitor -->
+            <rect x="660" y="0" width="120" height="60" class="stage" rx="5"/>
+            <text x="720" y="35" class="label" text-anchor="middle">Monitor</text>
+
+            <!-- Connecting Arrows -->
+            <path d="M140,30 L180,30" class="arrow" marker-end="url(#arrowhead)"/>
+            <path d="M300,30 L340,30" class="arrow" marker-end="url(#arrowhead)"/>
+            <path d="M460,30 L500,30" class="arrow" marker-end="url(#arrowhead)"/>
+            <path d="M620,30 L660,30" class="arrow" marker-end="url(#arrowhead)"/>
+        </g>
+
+        <!-- Arrow marker -->
+        <defs>
+            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="#3498db"/>
+            </marker>
+        </defs>
+    </g>
+</svg> 

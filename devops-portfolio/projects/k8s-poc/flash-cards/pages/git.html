@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git Flash Cards</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/cards.css">
+    <link rel="stylesheet" href="../assets/css/dark-mode.css">
+</head>
+<body>
+    <div class="nav-bar">
+        <a href="../index.html">← Back to Topics</a>
+    </div>
+
+    <div class="intro-section">
+        <h1>Git Version Control</h1>
+        
+        <div class="intro-content">
+            <p>
+                Git is a distributed version control system that tracks changes in source code during software development.
+                It enables multiple developers to work together on the same codebase efficiently.
+            </p>
+
+            <div class="architecture-diagram">
+                <h3>Git Workflow</h3>
+                <div class="diagram-container">
+                    <img src="../assets/diagrams/git-workflow.svg" alt="Git Workflow Diagram">
+                </div>
+            </div>
+
+            <div class="key-concepts">
+                <h3>Key Concepts:</h3>
+                <ul>
+                    <li><strong>Repository:</strong> Storage location for your project</li>
+                    <li><strong>Commit:</strong> Snapshot of changes</li>
+                    <li><strong>Branch:</strong> Independent line of development</li>
+                    <li><strong>Merge:</strong> Combining changes from different branches</li>
+                    <li><strong>Remote:</strong> Hosted version of your repository</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container" id="cardContainer"></div>
+
+    <script src="../data/git.js"></script>
+    <script src="../assets/js/cards.js"></script>
+    <script>
+        renderCards(gitFlashcards, 'cardContainer');
+    </script>
+</body>
+</html> 

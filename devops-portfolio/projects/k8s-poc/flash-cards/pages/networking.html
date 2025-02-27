@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Networking Flash Cards</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/cards.css">
+    <link rel="stylesheet" href="../assets/css/dark-mode.css">
+</head>
+<body>
+    <div class="nav-bar">
+        <a href="../index.html">← Back to Topics</a>
+    </div>
+
+    <div class="intro-section">
+        <h1>Network Concepts</h1>
+        
+        <div class="intro-content">
+            <p>
+                Understanding networking concepts is crucial for DevOps engineers. This includes protocols,
+                architecture, security, and troubleshooting network-related issues.
+            </p>
+
+            <div class="architecture-diagram">
+                <h3>Network Protocol Layers</h3>
+                <div class="diagram-container">
+                    <img src="../assets/diagrams/network-layers.svg" alt="OSI Network Layers">
+                </div>
+            </div>
+
+            <div class="key-concepts">
+                <h3>Key Concepts:</h3>
+                <ul>
+                    <li><strong>TCP/IP:</strong> Core internet protocols</li>
+                    <li><strong>DNS:</strong> Domain name resolution</li>
+                    <li><strong>HTTP/HTTPS:</strong> Web protocols</li>
+                    <li><strong>Load Balancing:</strong> Traffic distribution</li>
+                    <li><strong>Firewalls:</strong> Network security</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-container" id="cardContainer"></div>
+
+    <script src="../data/networking.js"></script>
+    <script src="../assets/js/cards.js"></script>
+    <script>
+        renderCards(networkingFlashcards, 'cardContainer');
+    </script>
+</body>
+</html> 
