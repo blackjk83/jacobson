@@ -3,8 +3,9 @@
 **Senior DevOps Engineer**
 
 **Contact:**
-
 * Email: yakov.av@gmail.com
+* LinkedIn: [Yakov Avshalom](www.linkedin.com/in/yaakov-a-068b1414)
+* UpWork: [UpWork Profile](https://www.upwork.com/freelancers/~01ad6b916ae647f497?mp_source=share)
 
 
 **Summary:**
