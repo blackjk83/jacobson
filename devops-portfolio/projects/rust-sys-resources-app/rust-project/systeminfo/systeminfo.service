@@ -1,0 +1,26 @@
+[Unit]
+Description=System Resource Monitoring Service
+Documentation=https://github.com/blackjk83/jacobson
+After=network.target
+
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/local/bin/systeminfo --service --port 3000 --interval 1
+Restart=always
+RestartSec=5
+Environment=RUST_LOG=info
+
+# Security settings
+NoNewPrivileges=true
+ProtectSystem=full
+ProtectHome=read-only
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictNamespaces=true
+MemoryDenyWriteExecute=true
+
+[Install]
+WantedBy=multi-user.target
