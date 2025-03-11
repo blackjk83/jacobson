@@ -6,9 +6,6 @@ use std::time::Duration;
 use std::io::{self, Write};
 use systeminfo::{get_system_info, SystemInfoError};
 use clap::Parser;
-use tabled::{Table, Tabled};
-use tabled::settings::{Style, Modify, Alignment};
-use tabled::settings::object::Segment;
 use chrono::Local;
 use colored::Colorize;
 
@@ -22,155 +19,225 @@ struct Cli {
     /// Update interval in seconds for watch mode
     #[arg(short = 'n', long, default_value_t = 1)]
     interval: u64,
-}
 
-#[derive(Tabled)]
-struct CpuInfo {
-    #[tabled(rename = "CPU Usage")]
-    usage: String,
-}
-
-#[derive(Tabled)]
-struct MemoryInfo {
-    #[tabled(rename = "Memory")]
-    category: String,
-    value: String,
-}
-
-#[derive(Tabled)]
-struct TempInfo {
-    component: String,
-    #[tabled(rename = "Temperature")]
-    temp: String,
+    /// Show detailed view instead of summary
+    #[arg(short, long)]
+    detailed: bool,
 }
 
 fn format_bytes(bytes: u64) -> String {
     const KB: u64 = 1024;
     const MB: u64 = KB * 1024;
     const GB: u64 = MB * 1024;
+    const TB: u64 = GB * 1024;
 
-    if bytes >= GB {
-        format!("{:.2} GB", bytes as f64 / GB as f64)
+    if bytes >= TB {
+        format!("{:>6.1} TB", bytes as f64 / TB as f64)
+    } else if bytes >= GB {
+        format!("{:>6.1} GB", bytes as f64 / GB as f64)
     } else if bytes >= MB {
-        format!("{:.2} MB", bytes as f64 / MB as f64)
+        format!("{:>6.1} MB", bytes as f64 / MB as f64)
     } else if bytes >= KB {
-        format!("{:.2} KB", bytes as f64 / KB as f64)
+        format!("{:>6.1} KB", bytes as f64 / KB as f64)
     } else {
-        format!("{} B", bytes)
+        format!("{:>6} B ", bytes)  // Extra space to align with other units
     }
 }
 
-fn create_styled_table<T: Tabled>(data: T) -> String {
-    Table::new([data])
-        .with(Style::modern())
-        .with(Modify::new(Segment::all()).with(Alignment::center()))
-        .to_string()
-}
-
-fn create_styled_table_vec<T: Tabled>(data: Vec<T>) -> String {
-    Table::new(data)
-        .with(Style::modern())
-        .with(Modify::new(Segment::all()).with(Alignment::center()))
-        .to_string()
-}
-
-fn get_display_height(info: &systeminfo::SystemInfo) -> usize {
-    // Calculate total lines needed for display
-    let mut lines = 4; // Header + separator + timestamp + blank line
-    lines += 4; // CPU table (header + separator + value + bottom)
-    lines += 6; // Memory table (header + 2 separators + 3 values + bottom)
-    if !info.components_temp.is_empty() {
-        lines += 2 + info.components_temp.len() * 2; // Temperature table (header + components * 2 for separator)
+fn colorize_percentage(value: f32, is_storage: bool) -> String {
+    let formatted = format!("{:>5.1}%", value);
+    if is_storage {
+        // Memory and disk thresholds (85/60)
+        if value >= 85.0 {
+            formatted.red().to_string()
+        } else if value >= 60.0 {
+            formatted.yellow().to_string()
+        } else {
+            formatted.green().to_string()
+        }
+    } else {
+        // CPU thresholds (80/50)
+        if value >= 80.0 {
+            formatted.red().to_string()
+        } else if value >= 50.0 {
+            formatted.yellow().to_string()
+        } else {
+            formatted.green().to_string()
+        }
     }
+}
+
+fn colorize_temperature(temp: f32) -> String {
+    let formatted = format!("{:>5.1}°C", temp);
+    if temp >= 75.0 {
+        formatted.red().to_string()
+    } else if temp >= 55.0 {
+        formatted.yellow().to_string()
+    } else {
+        formatted.green().to_string()
+    }
+}
+
+fn create_usage_bar(percentage: f32, width: usize, is_storage: bool) -> String {
+    let filled_chars = ((percentage / 100.0) * width as f32) as usize;
+    let empty_chars = width - filled_chars;
+    let bar = format!(
+        "[{}{}]",
+        "=".repeat(filled_chars),
+        " ".repeat(empty_chars)
+    );
+    
+    // Use different thresholds for storage (memory/disk) vs CPU
+    if is_storage {
+        if percentage >= 85.0 {
+            bar.red().to_string()
+        } else if percentage >= 60.0 {
+            bar.yellow().to_string()
+        } else {
+            bar.green().to_string()
+        }
+    } else {
+        if percentage >= 80.0 {
+            bar.red().to_string()
+        } else if percentage >= 50.0 {
+            bar.yellow().to_string()
+        } else {
+            bar.green().to_string()
+        }
+    }
+}
+
+fn get_display_height(info: &systeminfo::SystemInfo, detailed: bool) -> usize {
+    let mut lines = 1; // Single-line header
+    
+    if detailed {
+        lines += 2; // CPU header + global
+        lines += info.cpu_cores.len(); // CPU cores
+        lines += 4; // Memory section (1 header + 2 content + 1 spacing)
+        lines += 2; // Disk header + spacing
+        lines += info.disks.len(); // Disks
+        lines += 2; // Network header + spacing
+        lines += info.networks.len(); // Networks
+    } else {
+        lines += 2; // CPU + Memory
+        lines += info.disks.len(); // Disks
+        lines += info.networks.len(); // Networks
+    }
+    
     lines
 }
 
-fn clear_previous_output(height: usize) {
-    // Move cursor up
-    print!("\x1B[{}A", height);
-    // Clear from cursor to end of screen
-    print!("\x1B[J");
-}
-
-fn display_system_info(is_first_run: bool, previous_height: Option<usize>) -> Result<usize, SystemInfoError> {
+fn display_system_info(is_first_run: bool, previous_height: Option<usize>, detailed: bool) -> Result<usize, SystemInfoError> {
     let info = get_system_info()?;
-    let display_height = get_display_height(&info);
+    let display_height = get_display_height(&info, detailed);
     
     if !is_first_run {
+        // Move cursor up and clear to end of screen
         if let Some(prev_height) = previous_height {
-            clear_previous_output(prev_height);
+            print!("\x1B[{}A\x1B[J", prev_height);
         }
+    } else {
+        // On first run, clear screen and move to top
+        print!("\x1B[2J\x1B[H");
     }
     
-    // Header with timestamp
-    println!("System Resource Monitor");
-    println!("=====================");
-    println!("Last update: {}\n", Local::now().format("%Y-%m-%d %H:%M:%S").to_string().cyan());
+    // Single-line compact header with timestamp
+    println!("{}│{}│Ctrl+C to exit", 
+        "System Monitor".cyan(),
+        Local::now().format(" %H:%M:%S ").to_string().cyan());
 
-    // CPU Table with color based on usage
-    let usage_str = format!("{:.1}%", info.cpu_usage);
-    let colored_usage = if info.cpu_usage >= 80.0 {
-        usage_str.red().to_string()
-    } else if info.cpu_usage >= 50.0 {
-        usage_str.yellow().to_string()
-    } else {
-        usage_str.green().to_string()
-    };
-    
-    let cpu_table = create_styled_table(CpuInfo {
-        usage: colored_usage,
-    });
-    println!("{}\n", cpu_table);
+    if detailed {
+        // CPU Section
+        println!("CPU Usage/Temp");
+        println!("Global {} {} {}",
+            create_usage_bar(info.global_cpu.usage, 30, false),
+            colorize_percentage(info.global_cpu.usage, false),
+            info.global_cpu.temperature.map_or("".into(), |t| format!("[{}]", colorize_temperature(t)))
+        );
 
-    // Memory Table
-    let memory_usage = (info.memory_used as f64 / info.memory_total as f64) * 100.0;
-    let usage_str = format!("{:.1}%", memory_usage);
-    let colored_usage = if memory_usage >= 85.0 {
-        usage_str.red().to_string()
-    } else if memory_usage >= 60.0 {
-        usage_str.yellow().to_string()
-    } else {
-        usage_str.green().to_string()
-    };
+        for (i, cpu) in info.cpu_cores.iter().enumerate() {
+            print!("Core{:<2} {} {}", 
+                i,
+                create_usage_bar(cpu.usage, 30, false),
+                colorize_percentage(cpu.usage, false)
+            );
+            if let Some(temp) = cpu.temperature {
+                print!(" [{}]", colorize_temperature(temp));
+            }
+            println!();
+        }
 
-    let memory_table = create_styled_table_vec(vec![
-        MemoryInfo {
-            category: "Used".to_string(),
-            value: format_bytes(info.memory_used),
-        },
-        MemoryInfo {
-            category: "Total".to_string(),
-            value: format_bytes(info.memory_total),
-        },
-        MemoryInfo {
-            category: "Usage".to_string(),
-            value: colored_usage,
-        },
-    ]);
-    println!("{}\n", memory_table);
-
-    // Temperature Table with color indicators
-    if !info.components_temp.is_empty() {
-        let temp_info: Vec<TempInfo> = info.components_temp
-            .into_iter()
-            .map(|(component, temp)| {
-                let temp_str = format!("{:.1}°C", temp);
-                let colored_temp = if temp >= 75.0 {
-                    temp_str.red().to_string()
-                } else if temp >= 55.0 {
-                    temp_str.yellow().to_string()
-                } else {
-                    temp_str.green().to_string()
-                };
-                TempInfo {
-                    component,
-                    temp: colored_temp,
-                }
-            })
-            .collect();
+        // Memory Section
+        let ram_usage = (info.memory.used as f32 / info.memory.total as f32 * 100.0) as f32;
+        println!("\nMemory");
+        println!("RAM  {} {} {:>13} / {:<13}",
+            create_usage_bar(ram_usage, 30, true),
+            colorize_percentage(ram_usage, true),
+            format_bytes(info.memory.used),
+            format_bytes(info.memory.total)
+        );
         
-        let temp_table = create_styled_table_vec(temp_info);
-        println!("{}", temp_table);
+        let swap_usage = (info.memory.swap_used as f32 / info.memory.swap_total as f32 * 100.0) as f32;
+        println!("Swap {} {} {:>13} / {:<13}",
+            create_usage_bar(swap_usage, 30, true),
+            colorize_percentage(swap_usage, true),
+            format_bytes(info.memory.swap_used),
+            format_bytes(info.memory.swap_total)
+        );
+
+        // Disk Section
+        println!("\nDisk Usage");
+        for disk in &info.disks {
+            let usage = (disk.used as f64 / disk.total as f64 * 100.0) as f32;
+            println!("{:<12} {} {} {:>13} / {:<13}",
+                format!("{}:", disk.mount_point),
+                create_usage_bar(usage, 20, true),
+                colorize_percentage(usage, true),
+                format_bytes(disk.used),
+                format_bytes(disk.total)
+            );
+        }
+
+        // Network Section
+        println!("\nNetwork");
+        for net in &info.networks {
+            println!("{:<12} {}", 
+                format!("{}:", net.interface),
+                net.ip_address.cyan()
+            );
+        }
+    } else {
+        // Summary View
+        println!("CPU    {} {}",
+            create_usage_bar(info.global_cpu.usage, 40, false),
+            colorize_percentage(info.global_cpu.usage, false)
+        );
+
+        let ram_usage = (info.memory.used as f32 / info.memory.total as f32 * 100.0) as f32;
+        println!("Memory {} {} {:>13} / {:<13}",
+            create_usage_bar(ram_usage, 40, true),
+            colorize_percentage(ram_usage, true),
+            format_bytes(info.memory.used),
+            format_bytes(info.memory.total)
+        );
+
+        for disk in &info.disks {
+            let usage = (disk.used as f64 / disk.total as f64 * 100.0) as f32;
+            println!("{:<8} {} {} {:>13} / {:<13}",
+                format!("{}:", disk.mount_point),
+                create_usage_bar(usage, 30, true),
+                colorize_percentage(usage, true),
+                format_bytes(disk.used),
+                format_bytes(disk.total)
+            );
+        }
+
+        for net in &info.networks {
+            println!("{:<8} {}", 
+                format!("{}:", net.interface),
+                net.ip_address.cyan()
+            );
+        }
     }
 
     io::stdout().flush()?;
@@ -186,21 +253,19 @@ fn main() -> Result<(), Box<dyn Error>> {
         
         ctrlc::set_handler(move || {
             r.store(false, Ordering::SeqCst);
-            // Clear current line and move cursor to start
             print!("\r\x1B[K");
-            println!("\nMonitoring stopped. Thank you for using System Monitor!");
+            println!("\nMonitoring stopped.");
             io::stdout().flush().ok();
         })?;
 
-        println!("System Resource Monitor");
-        println!("=====================");
-        println!("Press Ctrl+C to exit");
-        println!("Updating every {} second{}\n", cli.interval, if cli.interval == 1 { "" } else { "s" });
+        // Clear screen and move to top
+        print!("\x1B[2J\x1B[H");
+        io::stdout().flush()?;
         
         let mut is_first_run = true;
         let mut previous_height = None;
         while running.load(Ordering::SeqCst) {
-            match display_system_info(is_first_run, previous_height) {
+            match display_system_info(is_first_run, previous_height, cli.detailed) {
                 Ok(height) => {
                     previous_height = Some(height);
                     is_first_run = false;
@@ -213,7 +278,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             thread::sleep(Duration::from_secs(cli.interval));
         }
     } else {
-        if let Err(e) = display_system_info(true, None) {
+        if let Err(e) = display_system_info(true, None, cli.detailed) {
             eprintln!("{}", format!("Error: {}", e).red());
             std::process::exit(1);
         }
