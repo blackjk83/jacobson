@@ -1,5 +1,6 @@
 use sysinfo::{System, SystemExt, CpuExt, ComponentExt};
 use thiserror::Error;
+use std::io;
 
 #[derive(Debug)]
 pub struct SystemInfo {
@@ -15,6 +16,8 @@ pub enum SystemInfoError {
     SystemError,
     #[error("Memory usage exceeds total memory")]
     InvalidMemoryState,
+    #[error("I/O error: {0}")]
+    IoError(#[from] io::Error),
 }
 
 /// Retrieves current system information including CPU, memory, and temperature

@@ -11,6 +11,11 @@ license = "MIT"
 [dependencies]
 sysinfo = "0.29.11"  # Modern system information library
 thiserror = "1.0.47"  # For better error handling
+clap = { version = "4.5.1", features = ["derive"] }  # Command line argument parsing
+tabled = "0.15.0"  # For pretty table output
+ctrlc = "3.4.2"    # For handling Ctrl+C in watch mode
+chrono = "0.4.34"  # For timestamp formatting
+colored = "2.1.0"  # For terminal colors
 
 [dev-dependencies]
 criterion = "0.5.1"  # For benchmarking
