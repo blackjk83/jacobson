@@ -5,12 +5,17 @@ edition = "2021"
 authors = ["Yakov Avshalom <yakov.av@gmail.com>"]
 description = "Gets the system hardware and os information"
 keywords = ["hardware", "operatingsystem", "os", "system", "information"]
-exclude = ["examples"]
 readme = "README.md"
 license = "MIT"
 
 [dependencies]
-systeminfo = { git = "https://github.com/marirs/systeminfo-rs", branch = "main" }
-libc = "0.2.94"
-serde = { version = "1.0.126", features = ["derive"] }
+sysinfo = "0.29.11"  # Modern system information library
+thiserror = "1.0.47"  # For better error handling
 
+[dev-dependencies]
+criterion = "0.5.1"  # For benchmarking
+pretty_assertions = "1.4.0"  # For better test assertions
+
+[[bench]]
+name = "system_info_bench"
+harness = false
